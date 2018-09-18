@@ -501,13 +501,6 @@ describe 'Browser' do
     $browser = WatirSpec.new_browser
   end
 
-  describe '#ready_state' do
-    it "gets the document's readyState property" do
-      expect(browser).to receive(:execute_script).with('return document.readyState')
-      browser.ready_state
-    end
-  end
-
   describe '#inspect' do
     it 'works even if browser is closed' do
       expect(browser).to receive(:url).and_raise(Errno::ECONNREFUSED)
@@ -518,6 +511,18 @@ describe 'Browser' do
   describe '#screenshot' do
     it 'returns an instance of of Watir::Screenshot' do
       expect(browser.screenshot).to be_kind_of(Watir::Screenshot)
+    end
+  end
+
+  describe '#wait' do
+    it 'is deprecated' do
+      expect { browser.wait }.to have_deprecated_ready_state
+    end
+  end
+
+  describe '#ready_state' do
+    it 'is deprecated' do
+      expect { browser.ready_state }.to have_deprecated_ready_state
     end
   end
 end

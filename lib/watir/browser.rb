@@ -172,10 +172,8 @@ module Watir
     # @raise [Watir::Wait::TimeoutError] if timeout is exceeded
     #
 
-    def wait(timeout = 5)
-      wait_until(timeout: timeout, message: "waiting for document.readyState == 'complete'") do
-        ready_state == 'complete'
-      end
+    def wait(*)
+      Watir.logger.deprecate('Browser#wait', 'explicit waits as necessary instead', ids: [:ready_state])
     end
 
     #
@@ -185,7 +183,8 @@ module Watir
     #
 
     def ready_state
-      execute_script 'return document.readyState'
+      Watir.logger.deprecate('Browser#ready_state', 'explicit waits as necessary instead', ids: [:ready_state])
+      'complete'
     end
 
     #
@@ -252,19 +251,6 @@ module Watir
       !@closed && window.present?
     end
     alias exists? exist?
-
-    #
-    # Protocol shared with Watir::Element
-    #
-    # @api private
-    #
-
-    def assert_exists
-      locate
-      return if window.present?
-
-      raise NoMatchingWindowFoundException, 'browser window was closed'
-    end
 
     def locate
       raise Error, 'browser was closed' if @closed

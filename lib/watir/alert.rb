@@ -85,14 +85,6 @@ module Watir
     end
     alias present? exists?
 
-    #
-    # @api private
-    #
-
-    def selector_string
-      'alert'
-    end
-
     private
 
     def assert_exists
