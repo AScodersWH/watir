@@ -520,7 +520,7 @@ describe 'Browser' do
 
         # this is just an example of a site that takes a while to load
         # TODO: Figure out a way to get a local site to take a set time to load; I couldn't figure it out with JS
-        browser.goto 'https://www.cnn.com/'
+        browser.goto 'http://www.chicagotribune.com/'
 
         # For some reason it is this refresh after it starts loading that puts ready_state into loading or interactive
         sleep 1
