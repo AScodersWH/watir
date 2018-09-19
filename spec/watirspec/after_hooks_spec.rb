@@ -27,7 +27,6 @@ describe 'Browser::AfterHooks' do
         browser.goto(WatirSpec.url_for('non_control_elements.html'))
 
         expect(output).to include('Dubito, ergo cogito, ergo sum')
-
       ensure
         browser.after_hooks.delete browser.after_hooks[0]
       end
@@ -200,7 +199,7 @@ describe 'Browser::AfterHooks' do
         4.times { browser.after_hooks.add(hook) }
         expect(browser.after_hooks.length).to eq 4
       ensure
-        4.times { browser.after_hooks.delete(hook)}
+        4.times { browser.after_hooks.delete(hook) }
       end
     end
   end
@@ -214,5 +213,4 @@ describe 'Browser::AfterHooks' do
       expect(browser.after_hooks[1]).to eq hook2
     end
   end
-
 end

@@ -234,7 +234,7 @@ describe 'FramedDriver' do
 
   it 'raises exception when attempting to switch to a non-frame element' do
     browser.goto WatirSpec.url_for('iframes.html')
-    element = browser.h1
+    element = browser.h1.wd
     fd = Watir::FramedDriver.new(element, browser)
     expect { fd.switch! }.to raise_exception Watir::Exception::UnknownFrameException
   end
