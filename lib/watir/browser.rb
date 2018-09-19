@@ -172,8 +172,10 @@ module Watir
     # @raise [Watir::Wait::TimeoutError] if timeout is exceeded
     #
 
-    def wait(*)
-      Watir.logger.deprecate('Browser#wait', 'explicit waits as necessary instead', ids: [:ready_state])
+    def wait(timeout = 5)
+      wait_until(timeout: timeout, message: "waiting for document.readyState == 'complete'") do
+        ready_state == 'complete'
+      end
     end
 
     #
@@ -183,8 +185,7 @@ module Watir
     #
 
     def ready_state
-      Watir.logger.deprecate('Browser#ready_state', 'explicit waits as necessary instead', ids: [:ready_state])
-      'complete'
+      execute_script 'return document.readyState'
     end
 
     #

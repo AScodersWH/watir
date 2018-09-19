@@ -501,6 +501,41 @@ describe 'Browser' do
     $browser = WatirSpec.new_browser
   end
 
+  describe '#ready_state' do
+    it "gets the document's readyState property" do
+      expect(browser).to receive(:execute_script).with('return document.readyState')
+      browser.ready_state
+    end
+  end
+
+  describe '#wait' do
+    not_compliant_on :chrome do
+      it 'waits for document ready state to be complete' do
+        @original = WatirSpec.implementation.clone
+        browser.close
+        @opts = WatirSpec.implementation.browser_args.last
+
+        @opts[:page_load_strategy] = 'none'
+        browser = WatirSpec.new_browser
+
+        # this is just an example of a site that takes a while to load
+        # TODO: Figure out a way to get a local site to take a set time to load; I couldn't figure it out with JS
+        browser.goto 'https://www.cnn.com/'
+
+        # For some reason it is this refresh after it starts loading that puts ready_state into loading or interactive
+        sleep 1
+        browser.refresh
+
+        expect(browser.ready_state).to eq 'loading'
+        browser.wait(20)
+        expect(browser.ready_state).to eq 'complete'
+        browser.close
+        WatirSpec.implementation = @original.clone
+        $browser = WatirSpec.new_browser
+      end
+    end
+  end
+
   describe '#inspect' do
     it 'works even if browser is closed' do
       expect(browser).to receive(:url).and_raise(Errno::ECONNREFUSED)
@@ -511,18 +546,6 @@ describe 'Browser' do
   describe '#screenshot' do
     it 'returns an instance of of Watir::Screenshot' do
       expect(browser.screenshot).to be_kind_of(Watir::Screenshot)
-    end
-  end
-
-  describe '#wait' do
-    it 'is deprecated' do
-      expect { browser.wait }.to have_deprecated_ready_state
-    end
-  end
-
-  describe '#ready_state' do
-    it 'is deprecated' do
-      expect { browser.ready_state }.to have_deprecated_ready_state
     end
   end
 end
