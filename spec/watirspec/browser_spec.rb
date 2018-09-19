@@ -526,7 +526,7 @@ describe 'Browser' do
         sleep 1
         browser.refresh
 
-        expect(browser.ready_state).to eq 'loading'
+        expect(browser.ready_state).to match(/loading|interactive/)
         browser.wait(20)
         expect(browser.ready_state).to eq 'complete'
         browser.close
